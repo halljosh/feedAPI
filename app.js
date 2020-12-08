@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const feedRoutes = require('./routes/feedroutes');
+const routes = require('./routes');
 
 const app = express();
 
@@ -9,12 +9,14 @@ app.use(bodyParser.json()); // parses JSON data from incoming requests
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // allows any origin to access the server
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE'); // allows these methods to be used by the client
+    res.setHeader('Access-Control-Allow-Methods', 'GET'); // allows GET to be used by the client
     res.setHeader('Access-Control-Allow-Headers', '*'); // allows client to set any headers
     next();
 });
 
-app.use('/feed', feedRoutes);
+app.use('/api', routes);
 
-app.listen(8080);
-console.log("server running!");
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+    console.log(`server running on port ${port}`);
+});
