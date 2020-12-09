@@ -8,12 +8,9 @@ router.get('/', (req, res) => {
 });
 
 // GET /api/pets
-router.get('/pets', feedController.getPet);
+router.get('/pets', feedController.getPets);
 
-// GET /api/pets/id
-router.get('/pets/:id', feedController.getPetById);
-
-// GET /api/pets/name
-router.get('/pets/:name', feedController.getPetByName);
+// GET /api/pets/{id or name}
+router.get('/pets/:param', feedController.getPet);
 
 module.exports = router;

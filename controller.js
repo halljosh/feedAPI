@@ -5,22 +5,28 @@ const pets = [
     { id: 4, name: 'Atuso Toggle VonCattington', animal: 'cat'}
 ];
 
-exports.getPet = (req, res) => {
+exports.getPets = (req, res) => {
     res.status(202).send(pets);
 };
 
-exports.getPetById = (req, res) => {
-    const pet = pets.find(p => p.id === parseInt(req.params.id));
-    if (!pet) {
-        res.status(404).send('the pet with this id was not found!');
+exports.getPet = (req, res) => {
+    if (!isNaN(req.params.param)) { // evaluates searches by ID
+        const pet = pets.find(p => p.id === parseInt(req.params.param));
+        if (!pet) {
+            const weirdPet = pets.find(p => p.name === parseInt(req.params.param));
+            if (!weirdPet) {
+                res.status(404).send('the pet with this id was not found!');
+            }
+        }
+        res.status(202).send(pet);
     }
-    res.status(202).send(pet);
-}
+    else { // evaluates searches by name
+        const namedPet = pets.find(p => p.name.toLowerCase().replace(/\s+/g, '') == (req.params.param).toLowerCase());
+        if (!namedPet) {
+            res.status(404).send('the pet with this name was not found!');
+        }
+        res.status(202).send(namedPet);
+    }
+};
 
-exports.getPetByName = (req, res) => {
-    const pet = pets.find(p => p.name == (req.params.name));
-    if (!pet) {
-        res.status(404).send('the pet with this name was not found!');
-    }
-    res.status(202).send(pet);
-}
+
